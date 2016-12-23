@@ -6,7 +6,6 @@ import time
 import traceback
 
 import requests
-import xmltodict
 
 if __name__ == "__main__":
 
@@ -26,16 +25,15 @@ if __name__ == "__main__":
     print("Monitoring")
 
     subreddit = "python"
-    url = "https://www.reddit.com/r/{}/new/.rss".format(subreddit)
+    url = "https://www.reddit.com/r/{}/new/.json".format(subreddit)
     headers = {'User-Agent': 'Mozilla/5.0'}
 
     while True:
         try:
             response = requests.get(url, headers=headers)
-            rss = xmltodict.parse(response.text)
+            rss = response.json()
 
-            newest_entry = rss['feed']['entry'][0]
-            timestamp = newest_entry['updated']
+            newest_entry = rss['data']['children'][0]['data']
             newest_id = newest_entry['id']
             title = newest_entry['title']
 
