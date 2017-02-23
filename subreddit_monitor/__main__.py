@@ -82,6 +82,18 @@ def _get_newest_entry(subreddit_name):
     return rss['data']['children'][0]['data']
 
 
+def _on_new_entry(newest_entry, newest_id, title):
+    """
+    Performs action on a new entry
+
+    :param dict newest_entry: Newest entry of RSS
+    :param str newest_id: ID of newest entry
+    :param str title: Title of newest entry
+    """
+
+    print("\tAction")
+
+
 def _monitor(data_path, reddit_data):
     """
     Start monitoring all subreddits
@@ -99,14 +111,15 @@ def _monitor(data_path, reddit_data):
                 newest_entry = _get_newest_entry(name)
                 newest_id = newest_entry['id']
                 title = newest_entry['title']
-                url = newest_entry['url']
                 short_title = title[:40]
 
                 if last_id != newest_id:
                     reddit_data[index][LAST_ID] = newest_id
+                    _save_reddit_data(data_path, reddit_data)
+
                     msg = "[{} : {}] {}".format(name, newest_id, short_title)
                     logger.info(msg)
-                    _save_reddit_data(data_path, reddit_data)
+                    _on_new_entry(newest_entry, newest_id, title)
 
             except Exception as e:
                 logger.error("AN ERROR OCCURRED")
