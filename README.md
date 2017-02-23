@@ -2,7 +2,7 @@
 
 This is just a really simple script that I was testing. It will be used in a larger project.  
 It simply:  
-1) Gets the RSS feed of a multiple subreddits eg [https://www.reddit.com/r/python/new/.json](https://www.reddit.com/r/python/new/.json)  
+1) Gets the RSS feed of multiple subreddits eg [https://www.reddit.com/r/python/new/.json](https://www.reddit.com/r/python/new/.json)  
 3) Grabs the ID of the newest thread  
 4) Prints a message and performs an action when a newer thread appears  
 5) Sleeps 5 seconds  
