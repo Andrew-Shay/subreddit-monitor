@@ -19,6 +19,7 @@ logger.setLevel(os.environ.get('SUBREDDIT_MONITOR_LOG', 'INFO'))
 requests_logger = logging.getLogger('requests')
 requests_logger.setLevel('CRITICAL')
 
+SLEEP_SEC = int(os.environ.get('SUBREDDIT_MONITOR_SLEEP', 5))
 LAST_ID = 'last_id'
 NAME = 'name'
 
@@ -82,10 +83,11 @@ def _get_newest_entry(subreddit_name):
     return rss['data']['children'][0]['data']
 
 
-def _on_new_entry(newest_entry, newest_id, title):
+def _on_new_entry(subreddit_name, newest_entry, newest_id, title):
     """
     Performs action on a new entry
 
+    :param str subreddit_name: Name of subreddit
     :param dict newest_entry: Newest entry of RSS
     :param str newest_id: ID of newest entry
     :param str title: Title of newest entry
@@ -119,7 +121,7 @@ def _monitor(data_path, reddit_data):
 
                     msg = "[{} : {}] {}".format(name, newest_id, short_title)
                     logger.info(msg)
-                    _on_new_entry(newest_entry, newest_id, title)
+                    _on_new_entry(name, newest_entry, newest_id, title)
 
             except Exception as e:
                 logger.error("AN ERROR OCCURRED")
@@ -137,13 +139,14 @@ def main(data_path=None):
     """
 
     if not data_path:
-        data_path = os.path.join(os.getcwd(), 'reddit_data.json')
+        default_path = os.path.join(os.getcwd(), 'reddit_data.json')
+        data_path = os.environ.get('SUBREDDIT_MONITOR_DATA', default_path)
     logger.info("Data path: '{}'".format(data_path))
 
     reddit_data = _load_reddit_data(data_path)
     logger.debug(_pretty_json(reddit_data))
 
-    logger.info("== Monitoring Subreddits ==")
+    logger.info("== Monitoring Subreddits Every '{}' seconds ==".format(SLEEP_SEC))
     _monitor(data_path, reddit_data)
 
 
