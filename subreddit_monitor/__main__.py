@@ -1,13 +1,13 @@
 #!/usr/bin/python
 # -*- coding: utf-8 -*-
 
+import json
+import logging
 import os
 import time
 import traceback
 
 import requests
-import json
-import logging
 
 logger = logging.getLogger()
 handler = logging.StreamHandler()
@@ -24,6 +24,14 @@ NAME = 'name'
 
 
 def _pretty_json(data):
+    """
+    Pretty string of JSON data
+
+    :param data: JSON data
+    :return: Pretty string
+    :rtype: str
+    """
+
     return json.dumps(data, sort_keys=True, indent=2)
 
 
@@ -124,6 +132,7 @@ def main(data_path=None):
 
     logger.info("== Monitoring Subreddits ==")
     _monitor(data_path, reddit_data)
+
 
 if __name__ == "__main__":
     main()
