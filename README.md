@@ -36,6 +36,10 @@ This will be automatically rewritten when new data is found.
  - Warning: Anything less than `5` may cause errors
 - `SUBREDDIT_MONITOR_DATA` absolute path to reddit data file eg `/Users/foo.bar/Documents/reddit_data.json`
 
+## Using this project
+This is just a sample project, so you should download the source code and modify it to fit your needs.  
+Logic is in `subreddit_monitor/__main__.py` and you can simply modify `_on_new_entry()` to get started.
+
 ## Requirements
 Python 3.5 or 2.7  
 requests  
